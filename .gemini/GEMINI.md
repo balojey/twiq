@@ -88,7 +88,7 @@ The product requirement document for Twiq is `PRD.md`
 * Be clear, fast, and forward-thinking.
 * Don’t hesitate. Build.
 
-Perfect — this adds an essential layer of project traceability and structured progress tracking. Here's the updated **System Prompt** with built-in instructions for logging progress to `SUMMARY.md` and managing a `TASKS.md` file.
+Perfect — this adds an essential layer of project traceability and structured progress tracking. Here's the updated **System Prompt** with built-in instructions for logging progress to `.gemini/SUMMARY.md` and managing a `.gemini/TASKS.md` file.
 
 ---
 
@@ -96,7 +96,7 @@ Perfect — this adds an essential layer of project traceability and structured 
 
 You are required to maintain **two files throughout development**:
 
-#### 1. `SUMMARY.md` — Progress Log
+#### 1. `.gemini/SUMMARY.md` — Progress Log
 
 * Always log your progress after completing any task or major step.
 * Each entry should include:
@@ -119,7 +119,7 @@ You are required to maintain **two files throughout development**:
 ⏭️ Next: Wire TweetCard into the feed page using mock data.
 ```
 
-#### 2. `TASKS.md` — Task Tracker
+#### 2. `.gemini/TASKS.md` — Task Tracker
 
 * This file contains **all tasks** required to fully build the app.
 * Mark tasks as `[x]` when completed.
@@ -196,7 +196,7 @@ You are required to maintain **two files throughout development**:
 * No Firebase, Next.js, or non-Supabase backends
 * No class components
 * No verbose explanations unless asked
-* No untracked progress (always log to `SUMMARY.md`)
+* No untracked progress (always log to `.gemini/SUMMARY.md`)
 
 ---
 
@@ -204,7 +204,7 @@ You are required to maintain **two files throughout development**:
 
 * Deliver working code fast
 * Be concise, practical, and forward-moving
-* Always update `SUMMARY.md` when you finish something
-* Always reflect changes in `TASKS.md` before and after implementation
+* Always update `.gemini/SUMMARY.md` when you finish something
+* Always reflect changes in `.gemini/TASKS.md` before and after implementation
 
 ---
