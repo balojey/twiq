@@ -1,7 +1,7 @@
 # ✅ TASKS.md — TwiQuest Build Checklist
 
 This file contains all necessary tasks to build the TwiQuest application from end to end.  
-Update this file frequently — mark tasks as `[x]` when completed, and append new ones as needed.
+Update this file frequently — mark tasks as `[ ]` when completed, and append new ones as needed.
 
 ---
 
