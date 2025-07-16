@@ -35,33 +35,33 @@ CREATE TABLE IF NOT EXISTS tweets (
 );
 
 -- Enable RLS
-ALTER TABLE tweets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.tweets ENABLE ROW LEVEL SECURITY;
 
 -- Create policies
 CREATE POLICY "Anyone can read tweets"
-  ON tweets
+  ON public.tweets
   FOR SELECT
   TO authenticated
   USING (true);
 
 CREATE POLICY "Authenticated users can create tweets"
-  ON tweets
+  ON public.tweets
   FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can delete own tweets"
-  ON tweets
+  ON public.tweets
   FOR DELETE
   TO authenticated
   USING (auth.uid() = user_id);
 
 -- Create indexes for performance
-CREATE INDEX IF NOT EXISTS tweets_user_id_idx ON tweets(user_id);
-CREATE INDEX IF NOT EXISTS tweets_parent_id_idx ON tweets(parent_id);
-CREATE INDEX IF NOT EXISTS tweets_created_at_idx ON tweets(created_at DESC);
+CREATE INDEX IF NOT EXISTS tweets_user_id_idx ON public.tweets(user_id);
+CREATE INDEX IF NOT EXISTS tweets_parent_id_idx ON public.tweets(parent_id);
+CREATE INDEX IF NOT EXISTS tweets_created_at_idx ON public.tweets(created_at DESC);
 
 -- Create trigger for updated_at
 CREATE TRIGGER update_tweets_updated_at
-  BEFORE UPDATE ON tweets
+  BEFORE UPDATE ON public.tweets
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

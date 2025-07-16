@@ -70,48 +70,48 @@ CREATE TABLE IF NOT EXISTS user_quests (
 );
 
 -- Enable RLS
-ALTER TABLE xp_events ENABLE ROW LEVEL SECURITY;
-ALTER TABLE quests ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_quests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.xp_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.quests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_quests ENABLE ROW LEVEL SECURITY;
 
 -- XP Events policies
 CREATE POLICY "Users can read own xp events"
-  ON xp_events
+  ON public.xp_events
   FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
 -- Quests policies
 CREATE POLICY "Anyone can read active quests"
-  ON quests
+  ON public.quests
   FOR SELECT
   TO authenticated
   USING (active = true);
 
 -- User Quests policies
 CREATE POLICY "Users can read own quest progress"
-  ON user_quests
+  ON public.user_quests
   FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can update own quest progress"
-  ON user_quests
+  ON public.user_quests
   FOR UPDATE
   TO authenticated
   USING (auth.uid() = user_id);
 
 CREATE POLICY "Users can insert own quest progress"
-  ON user_quests
+  ON public.user_quests
   FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
 -- Create indexes
-CREATE INDEX IF NOT EXISTS xp_events_user_id_idx ON xp_events(user_id);
-CREATE INDEX IF NOT EXISTS xp_events_created_at_idx ON xp_events(created_at DESC);
-CREATE INDEX IF NOT EXISTS user_quests_user_id_idx ON user_quests(user_id);
-CREATE INDEX IF NOT EXISTS user_quests_quest_id_idx ON user_quests(quest_id);
+CREATE INDEX IF NOT EXISTS xp_events_user_id_idx ON public.xp_events(user_id);
+CREATE INDEX IF NOT EXISTS xp_events_created_at_idx ON public.xp_events(created_at DESC);
+CREATE INDEX IF NOT EXISTS user_quests_user_id_idx ON public.user_quests(user_id);
+CREATE INDEX IF NOT EXISTS user_quests_quest_id_idx ON public.user_quests(quest_id);
 
 -- Function to award XP
 CREATE OR REPLACE FUNCTION award_xp(
@@ -123,11 +123,11 @@ CREATE OR REPLACE FUNCTION award_xp(
 RETURNS void AS $$
 BEGIN
   -- Insert XP event
-  INSERT INTO xp_events (user_id, event_type, xp_amount, reference_id)
+  INSERT INTO public.xp_events (user_id, event_type, xp_amount, reference_id)
   VALUES (p_user_id, p_event_type, p_xp_amount, p_reference_id);
   
   -- Update user's total XP and level
-  UPDATE users 
+  UPDATE public.users 
   SET 
     xp = xp + p_xp_amount,
     level = GREATEST(1, FLOOR((xp + p_xp_amount) / 100) + 1),
@@ -137,7 +137,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Insert default quests
-INSERT INTO quests (title, description, xp_reward, criteria) VALUES
+INSERT INTO public.quests (title, description, xp_reward, criteria) VALUES
   ('First Tweet', 'Post your first tweet', 50, '{"tweets_count": 1}'),
   ('Social Butterfly', 'Get 5 likes on your tweets', 100, '{"likes_received": 5}'),
   ('Viral Content', 'Get 3 retweets on a single tweet', 150, '{"retweets_on_single_tweet": 3}'),

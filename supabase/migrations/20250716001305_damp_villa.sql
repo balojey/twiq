@@ -34,17 +34,17 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 -- Enable RLS
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
 -- Create policies
 CREATE POLICY "Users can read all profiles"
-  ON users
+  ON public.users
   FOR SELECT
   TO authenticated
   USING (true);
 
 CREATE POLICY "Users can update own profile"
-  ON users
+  ON public.users
   FOR UPDATE
   TO authenticated
   USING (auth.uid() = id);
@@ -53,7 +53,7 @@ CREATE POLICY "Users can update own profile"
 CREATE OR REPLACE FUNCTION handle_new_user()
 RETURNS trigger AS $$
 BEGIN
-  INSERT INTO users (id, username, avatar_url)
+  INSERT INTO public.users (id, username, avatar_url)
   VALUES (
     NEW.id,
     COALESCE(NEW.raw_user_meta_data->>'user_name', NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1)),
@@ -80,5 +80,5 @@ $$ LANGUAGE plpgsql;
 
 -- Create trigger for updated_at
 CREATE TRIGGER update_users_updated_at
-  BEFORE UPDATE ON users
+  BEFORE UPDATE ON public.users
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

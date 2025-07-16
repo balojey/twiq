@@ -45,49 +45,49 @@ CREATE TABLE IF NOT EXISTS retweets (
 );
 
 -- Enable RLS
-ALTER TABLE likes ENABLE ROW LEVEL SECURITY;
-ALTER TABLE retweets ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.likes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.retweets ENABLE ROW LEVEL SECURITY;
 
 -- Likes policies
 CREATE POLICY "Anyone can read likes"
-  ON likes
+  ON public.likes
   FOR SELECT
   TO authenticated
   USING (true);
 
 CREATE POLICY "Authenticated users can like tweets"
-  ON likes
+  ON public.likes
   FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can unlike tweets"
-  ON likes
+  ON public.likes
   FOR DELETE
   TO authenticated
   USING (auth.uid() = user_id);
 
 -- Retweets policies
 CREATE POLICY "Anyone can read retweets"
-  ON retweets
+  ON public.retweets
   FOR SELECT
   TO authenticated
   USING (true);
 
 CREATE POLICY "Authenticated users can retweet"
-  ON retweets
+  ON public.retweets
   FOR INSERT
   TO authenticated
   WITH CHECK (auth.uid() = user_id);
 
 CREATE POLICY "Users can unretweet"
-  ON retweets
+  ON public.retweets
   FOR DELETE
   TO authenticated
   USING (auth.uid() = user_id);
 
 -- Create indexes
-CREATE INDEX IF NOT EXISTS likes_user_id_idx ON likes(user_id);
-CREATE INDEX IF NOT EXISTS likes_tweet_id_idx ON likes(tweet_id);
-CREATE INDEX IF NOT EXISTS retweets_user_id_idx ON retweets(user_id);
-CREATE INDEX IF NOT EXISTS retweets_tweet_id_idx ON retweets(tweet_id);
+CREATE INDEX IF NOT EXISTS likes_user_id_idx ON public.likes(user_id);
+CREATE INDEX IF NOT EXISTS likes_tweet_id_idx ON public.likes(tweet_id);
+CREATE INDEX IF NOT EXISTS retweets_user_id_idx ON public.retweets(user_id);
+CREATE INDEX IF NOT EXISTS retweets_tweet_id_idx ON public.retweets(tweet_id);
