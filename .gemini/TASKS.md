@@ -6,12 +6,12 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ---
 
 ## 📦 Project Setup
-- [ ] Initialize Vite + React project
-- [ ] Set up TailwindCSS
-- [ ] Install and configure shadcn/ui components
-- [ ] Configure Prettier and ESLint
-- [ ] Install Framer Motion
-- [ ] Set up Supabase project
+- [x] Initialize Vite + React project
+- [x] Set up TailwindCSS
+- [x] Install and configure shadcn/ui components
+- [x] Configure Prettier and ESLint
+- [x] Install Framer Motion
+- [x] Set up Supabase project
 - [ ] Connect Supabase to frontend
 - [ ] Add dark mode support
 
