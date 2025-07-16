@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import TweetComposer from '@/components/TweetComposer'
+import TweetFeed from '@/components/TweetFeed'
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'public' | 'following' | 'popular'>('public')
+  const [feedKey, setFeedKey] = useState(0)
+
+  const handleTweetPosted = () => {
+    // Force feed refresh by updating key
+    setFeedKey(prev => prev + 1)
+  }
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -30,34 +37,10 @@ export default function HomePage() {
       </div>
 
       <div className="p-4">
-        <Card>
-          <CardHeader>
-            <CardTitle>Welcome to Twiq! 🎮</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              You're now part of the gamified social experience. Start tweeting to earn XP and level up!
-            </p>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center justify-between">
-                <span>Post a tweet</span>
-                <span className="text-primary font-medium">+10 XP</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Get a like</span>
-                <span className="text-primary font-medium">+5 XP</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Get a retweet</span>
-                <span className="text-primary font-medium">+10 XP</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Daily login bonus</span>
-                <span className="text-primary font-medium">+20 XP</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="space-y-4">
+          <TweetComposer onTweetPosted={handleTweetPosted} />
+          <TweetFeed key={feedKey} feedType={activeTab} />
+        </div>
       </div>
     </div>
   )
