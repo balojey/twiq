@@ -21,37 +21,71 @@ export default function TweetFeed({ feedType }: TweetFeedProps) {
     setLoading(true)
     
     try {
-      let query = supabase
+      // First get tweets with user data
+      const { data: tweetsData, error: tweetsError } = await supabase
         .from('tweets')
         .select(`
           *,
-          user:users(*),
-          likes_count:likes(count),
-          retweets_count:retweets(count),
-          replies_count:tweets!parent_id(count),
-          is_liked:likes!inner(user_id),
-          is_retweeted:retweets!inner(user_id)
+          user:users(*)
         `)
         .is('parent_id', null) // Only top-level tweets, not replies
         .order('created_at', { ascending: false })
         .limit(20)
 
-      // For now, all feeds show public tweets
-      // TODO: Implement following and popular logic
-      
-      const { data, error } = await query
+      if (tweetsError) throw tweetsError
 
-      if (error) throw error
+      if (!tweetsData) {
+        setTweets([])
+        return
+      }
 
-      // Process the data to flatten the counts and boolean flags
-      const processedTweets = data?.map(tweet => ({
-        ...tweet,
-        likes_count: tweet.likes_count?.[0]?.count || 0,
-        retweets_count: tweet.retweets_count?.[0]?.count || 0,
-        replies_count: tweet.replies_count?.[0]?.count || 0,
-        is_liked: tweet.is_liked?.some((like: any) => like.user_id === user.id) || false,
-        is_retweeted: tweet.is_retweeted?.some((retweet: any) => retweet.user_id === user.id) || false,
-      })) || []
+      // Get counts and user interactions for each tweet
+      const processedTweets = await Promise.all(
+        tweetsData.map(async (tweet) => {
+          // Get likes count
+          const { count: likesCount } = await supabase
+            .from('likes')
+            .select('*', { count: 'exact', head: true })
+            .eq('tweet_id', tweet.id)
+
+          // Get retweets count
+          const { count: retweetsCount } = await supabase
+            .from('retweets')
+            .select('*', { count: 'exact', head: true })
+            .eq('tweet_id', tweet.id)
+
+          // Get replies count
+          const { count: repliesCount } = await supabase
+            .from('tweets')
+            .select('*', { count: 'exact', head: true })
+            .eq('parent_id', tweet.id)
+
+          // Check if current user liked this tweet
+          const { data: userLike } = await supabase
+            .from('likes')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('tweet_id', tweet.id)
+            .single()
+
+          // Check if current user retweeted this tweet
+          const { data: userRetweet } = await supabase
+            .from('retweets')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('tweet_id', tweet.id)
+            .single()
+
+          return {
+            ...tweet,
+            likes_count: likesCount || 0,
+            retweets_count: retweetsCount || 0,
+            replies_count: repliesCount || 0,
+            is_liked: !!userLike,
+            is_retweeted: !!userRetweet,
+          }
+        })
+      )
 
       setTweets(processedTweets)
     } catch (error) {

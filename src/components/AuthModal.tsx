@@ -1,47 +1,71 @@
-import { useState } from 'react'
-import { Github, Mail } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Github, Mail, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { supabase } from '@/lib/supabase'
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogHeader, 
+  DialogTitle 
+} from '@/components/ui/dialog'
+import { useAuth } from '@/contexts/AuthContext'
+import { motion } from 'framer-motion'
 
 export default function AuthModal() {
   const [loading, setLoading] = useState(false)
+  const { signInWithGitHub } = useAuth()
 
   const handleGithubLogin = async () => {
     setLoading(true)
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-          redirectTo: window.location.origin
-        }
-      })
-      if (error) throw error
+      await signInWithGitHub()
     } catch (error) {
       console.error('Error logging in with GitHub:', error)
-    } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold">Welcome to Twiq</CardTitle>
-          <CardDescription>
+    <Dialog open={true} onOpenChange={() => {}}>
+      <DialogContent 
+        className="sm:max-w-md"
+        showCloseButton={false}
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
+        <DialogHeader className="text-center">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary/60 rounded-full flex items-center justify-center mb-4"
+          >
+            <span className="text-2xl font-bold text-primary-foreground">T</span>
+          </motion.div>
+          <DialogTitle className="text-2xl font-bold">Welcome to Twiq</DialogTitle>
+          <DialogDescription className="text-base">
             Join the gamified social experience. Sign in to start earning XP and leveling up!
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 mt-6">
           <Button
             onClick={handleGithubLogin}
             disabled={loading}
-            className="w-full"
+            className="w-full h-12"
             size="lg"
           >
-            <Github className="mr-2 h-4 w-4" />
-            {loading ? 'Connecting...' : 'Continue with GitHub'}
+            {loading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Connecting...
+              </>
+            ) : (
+              <>
+                <Github className="mr-2 h-4 w-4" />
+                Continue with GitHub
+              </>
+            )}
           </Button>
           
           <div className="relative">
@@ -57,7 +81,7 @@ export default function AuthModal() {
 
           <Button
             variant="outline"
-            className="w-full"
+            className="w-full h-12"
             size="lg"
             disabled
           >
@@ -68,8 +92,8 @@ export default function AuthModal() {
           <p className="text-xs text-muted-foreground text-center">
             By continuing, you agree to our Terms of Service and Privacy Policy.
           </p>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }

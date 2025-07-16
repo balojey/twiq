@@ -1,13 +1,39 @@
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Trophy, Medal, Award } from 'lucide-react'
+import { Trophy, Medal, Award, Loader2 } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
+import { User } from '@/types'
 
 export default function LeaderboardPage() {
-  // Mock data for now
-  const leaderboard = [
-    { rank: 1, username: 'alice_dev', level: 15, xp: 1500, avatar: 'A' },
-    { rank: 2, username: 'bob_gamer', level: 12, xp: 1200, avatar: 'B' },
-    { rank: 3, username: 'charlie_code', level: 10, xp: 1000, avatar: 'C' },
-  ]
+  const [leaderboard, setLeaderboard] = useState<(User & { rank: number })[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetchLeaderboard()
+  }, [])
+
+  const fetchLeaderboard = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .order('xp', { ascending: false })
+        .limit(10)
+
+      if (error) throw error
+
+      const leaderboardWithRanks = data?.map((user, index) => ({
+        ...user,
+        rank: index + 1
+      })) || []
+
+      setLeaderboard(leaderboardWithRanks)
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const getRankIcon = (rank: number) => {
     switch (rank) {
@@ -26,11 +52,16 @@ export default function LeaderboardPage() {
     <div className="max-w-2xl mx-auto">
       <div className="p-4 border-b border-border">
         <h1 className="text-xl font-bold">Leaderboard</h1>
-        <p className="text-sm text-muted-foreground">Top XP earners this week</p>
+        <p className="text-sm text-muted-foreground">Top XP earners of all time</p>
       </div>
 
+      {loading ? (
+        <div className="flex justify-center py-8">
+          <Loader2 className="h-6 w-6 animate-spin" />
+        </div>
+      ) : (
       <div className="p-4 space-y-4">
-        {leaderboard.map((user) => (
+        {leaderboard.length > 0 ? leaderboard.map((user) => (
           <Card key={user.rank}>
             <CardContent className="p-4">
               <div className="flex items-center space-x-4">
@@ -40,7 +71,7 @@ export default function LeaderboardPage() {
                 
                 <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
                   <span className="font-bold text-primary-foreground">
-                    {user.avatar}
+                    {user.username?.[0]?.toUpperCase()}
                   </span>
                 </div>
                 
@@ -57,16 +88,23 @@ export default function LeaderboardPage() {
               </div>
             </CardContent>
           </Card>
-        ))}
+        )) : (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center text-muted-foreground">
+                No users on the leaderboard yet!
+              </CardTitle>
+            </CardHeader>
+          </Card>
+        )}
         
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-center text-muted-foreground">
-              Start tweeting to join the leaderboard!
-            </CardTitle>
-          </CardHeader>
-        </Card>
+        {leaderboard.length > 0 && (
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            Start tweeting and engaging to climb the leaderboard!
+          </p>
+        )}
       </div>
+      )}
     </div>
   )
 }
