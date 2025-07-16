@@ -18,7 +18,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ---
 
 ## 👥 Authentication & User Profiles
-- [x] Enable Supabase Auth (Email + GitHub OAuth)
+- [ ] Enable Supabase Auth (Email + GitHub OAuth)
 - [x] Create GitHub login modal (non-dismissible)
 - [x] Build `AuthProvider` using React Context
 - [ ] Build onboarding screen (username, avatar, bio)
@@ -40,10 +40,10 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ---
 
 ## 🏠 Feed Pages
-- [x] Public Feed (latest tweets from everyone)
+- [ ] Public Feed (latest tweets from everyone)
 - [ ] Following Feed (tweets from followed users)
 - [ ] Popular Feed (top liked/retweeted tweets daily)
-- [x] Basic feed loading (needs infinite scroll)
+- [ ] Basic feed loading (needs infinite scroll)
 - [ ] Tweet detail view with thread replies
 
 ---
