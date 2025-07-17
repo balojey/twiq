@@ -13,9 +13,10 @@ import { showNotification } from '@/components/NotificationToast'
 interface TweetCardProps {
   tweet: Tweet
   onUpdate?: () => void
+  onTweetClick?: (tweetId: string) => void
 }
 
-export default function TweetCard({ tweet, onUpdate }: TweetCardProps) {
+export default function TweetCard({ tweet, onUpdate, onTweetClick }: TweetCardProps) {
   const [isLiking, setIsLiking] = useState(false)
   const [isRetweeting, setIsRetweeting] = useState(false)
   const { user } = useAuth()
@@ -126,13 +127,24 @@ export default function TweetCard({ tweet, onUpdate }: TweetCardProps) {
     }
   }
 
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't trigger if clicking on interactive elements
+    if ((e.target as HTMLElement).closest('button')) {
+      return
+    }
+    onTweetClick?.(tweet.id)
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="hover:bg-accent/50 transition-colors cursor-pointer">
+      <Card 
+        className="hover:bg-accent/50 transition-colors cursor-pointer"
+        onClick={handleCardClick}
+      >
         <CardContent className="p-4">
           <div className="flex space-x-3">
             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
@@ -172,7 +184,7 @@ export default function TweetCard({ tweet, onUpdate }: TweetCardProps) {
                   <img
                     src={tweet.media_url}
                     alt="Tweet media"
-                    className="rounded-lg max-w-full h-auto"
+                    className="rounded-lg max-w-full h-auto max-h-96 object-cover"
                   />
                 </div>
               )}
@@ -181,6 +193,7 @@ export default function TweetCard({ tweet, onUpdate }: TweetCardProps) {
                 <Button
                   variant="ghost"
                   size="sm"
+                  onClick={() => onTweetClick?.(tweet.id)}
                   className="text-muted-foreground hover:text-primary hover:bg-primary/10 p-2"
                 >
                   <MessageCircle className="h-4 w-4 mr-1" />

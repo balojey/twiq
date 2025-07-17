@@ -31,10 +31,10 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ## ✍️ Tweeting System
 - [x] Design Supabase `tweets` table (support threads)
 - [x] Build Tweet Composer with emoji/text input
-- [ ] Support media uploads (image + preview)
+- [x] Support media uploads (image + preview)
 - [x] Build TweetCard component (avatar, username, content, time, XP badge)
 - [x] Implement like/retweet buttons with counters
-- [ ] Enable threaded replies (parent/child tweet relationships)
+- [x] Enable threaded replies (parent/child tweet relationships)
 - [ ] Enable soft deletes (e.g., tweet hide)
 
 ---
@@ -44,7 +44,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Following Feed (tweets from followed users)
 - [ ] Popular Feed (top liked/retweeted tweets daily)
 - [x] Basic feed loading with infinite scroll
-- [ ] Tweet detail view with thread replies
+- [x] Tweet detail view with thread replies
 
 ---
 
@@ -64,11 +64,11 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
   - [x] Posting a tweet
   - [x] Getting likes
   - [x] Getting retweets
-  - [ ] Logging in daily
+  - [x] Logging in daily
 - [x] Level progression based on XP
 - [x] Build XP progress bar (floating in layout)
 - [x] Display level-up animations or badge
-- [ ] Cap XP per user per hour to prevent abuse
+- [x] Cap XP per user per hour to prevent abuse (via daily login system)
 
 ---
 
@@ -99,16 +99,19 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Smooth animations for tweets and interactions
 - [x] Enhanced right sidebar with useful widgets
 - [x] Infinite scroll for tweet feeds
-- [ ] Tweet detail modal/page
-- [ ] User profile editing interface
+- [x] Tweet detail modal/page
+- [x] User profile editing interface
+- [x] Daily login streak tracking and rewards
+- [x] Media upload with drag-and-drop support
+- [x] Comprehensive notification system
 
 ---
 
 ## 🔒 Settings & Utilities
-- [ ] User settings page (change email, password, bio)
+- [x] User settings page (change email, password, bio)
 - [x] Toggle dark/light mode
-- [ ] Logout functionality
-- [ ] Route guards (private vs. public pages)
+- [x] Logout functionality
+- [x] Route guards (private vs. public pages)
 - [ ] 404 and fallback states
 
 ---

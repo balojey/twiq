@@ -6,6 +6,8 @@ import ThemeToggle from '@/components/ThemeToggle'
 import UserSuggestions from '@/components/UserSuggestions'
 import TweetStats from '@/components/TweetStats'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useDailyLogin } from '@/hooks/useDailyLogin'
+import DailyStreakCard from '@/components/DailyStreakCard'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -13,6 +15,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const { user, loading } = useAuth()
+  useDailyLogin() // Automatically check daily login
 
   if (loading) {
     return (
@@ -39,6 +42,8 @@ export default function Layout({ children }: LayoutProps) {
         <div className="w-80 p-4">
           <div className="sticky top-4 space-y-4">
             <TweetStats />
+            
+            <DailyStreakCard />
             
             <UserSuggestions />
             

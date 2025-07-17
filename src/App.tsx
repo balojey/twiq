@@ -7,6 +7,7 @@ import HomePage from '@/pages/HomePage'
 import ProfilePage from '@/pages/ProfilePage'
 import LeaderboardPage from '@/pages/LeaderboardPage'
 import QuestsPage from '@/pages/QuestsPage'
+import SettingsPage from '@/pages/SettingsPage'
 import './App.css'
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/profile/:username" element={<ProfilePage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
                 <Route path="/quests" element={<QuestsPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
               </Routes>
             </Layout>
             <Toaster />

@@ -10,10 +10,11 @@ import { motion } from 'framer-motion'
 
 interface TweetFeedProps {
   feedType: 'public' | 'following' | 'popular'
+  onTweetClick?: (tweetId: string) => void
 }
 
 const TWEETS_PER_PAGE = 10
-export default function TweetFeed({ feedType }: TweetFeedProps) {
+export default function TweetFeed({ feedType, onTweetClick }: TweetFeedProps) {
   const [tweets, setTweets] = useState<Tweet[]>([])
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
@@ -204,6 +205,7 @@ export default function TweetFeed({ feedType }: TweetFeedProps) {
             <TweetCard
               tweet={tweet}
               onUpdate={() => fetchTweets(false)}
+              onTweetClick={onTweetClick}
             />
           </motion.div>
         ))}
