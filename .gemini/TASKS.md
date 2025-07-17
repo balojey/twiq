@@ -132,8 +132,6 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ---
 
 ## 📊 Deployment (Optional)
-- [ ] Setup CI/CD (e.g., Vercel, Netlify)
-- [ ] Add Supabase project keys to deployment env
 - [ ] Optimize images/media
 - [ ] Add meta tags / SEO basics
 - [ ] Track errors (e.g., with Sentry or console logging)
