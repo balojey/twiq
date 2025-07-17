@@ -187,24 +187,24 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 
 ### 🛠️ Onchain Profile Creation
 
-* [ ] Create a serverless function (`createUserProfile.ts`) to:
+* [x] Create a function (`createUserProfile.ts`) to:
 
   * Fetch new user data from Supabase
   * Use Honeycomb client to generate a transaction:
 
     ```ts
+    import { client } from '@/lib/honeycomb';
+
     const { createNewUserWithProfileTransaction } = await client.createNewUserWithProfileTransaction(...)
     ```
   * Send transaction using:
 
     ```ts
+    import { sendClientTransactions } from "@honeycomb-protocol/edge-client/client/walletHelpers";
     await sendClientTransactions(client, wallet, txResponse);
     ```
-* [ ] Trigger this function when a new user signs up:
-
-  * (Option A) Call from Supabase edge function `on_new_user_create_profile`
-  * (Option B) Trigger from frontend after wallet connection
-* [ ] Ensure user info (name, bio, avatar) is passed from Supabase
+* [x] Trigger this function when a user connects their wallet for the first time:
+* [x] Ensure user info (name, bio, avatar) is passed from Supabase
 
 ---
 
