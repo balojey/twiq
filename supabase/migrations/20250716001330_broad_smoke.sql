@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS xp_events (
 -- Create quests table
 CREATE TABLE IF NOT EXISTS quests (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  title text NOT NULL,
+  title text NOT NULL UNIQUE,
   description text NOT NULL,
   xp_reward integer NOT NULL CHECK (xp_reward > 0),
   criteria jsonb NOT NULL DEFAULT '{}',
@@ -143,4 +143,4 @@ INSERT INTO public.quests (title, description, xp_reward, criteria) VALUES
   ('Viral Content', 'Get 3 retweets on a single tweet', 150, '{"retweets_on_single_tweet": 3}'),
   ('Daily Poster', 'Post 5 tweets in a day', 75, '{"tweets_in_day": 5}'),
   ('Engagement Master', 'Get 10 total interactions (likes + retweets)', 200, '{"total_interactions": 10}')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (title) DO NOTHING;

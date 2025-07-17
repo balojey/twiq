@@ -121,13 +121,6 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 
 ---
 
-## 🔗 Wallet Integration (Optional)
-- [ ] Add “Connect Wallet” button to bottom-left sidebar
-- [ ] Use Solana wallet adapter or Phantom
-- [ ] Store wallet address in user profile (optional XP boost)
-
----
-
 ## 📄 Documentation & Logging
 - [x] Maintain `SUMMARY.md` after every completed task
 - [x] Keep this `TASKS.md` file updated and checked
