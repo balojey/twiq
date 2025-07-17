@@ -59,27 +59,27 @@ CREATE TABLE IF NOT EXISTS content_analytics (
 );
 
 -- Enable RLS
-ALTER TABLE user_analytics ENABLE ROW LEVEL SECURITY;
-ALTER TABLE content_analytics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_analytics ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.content_analytics ENABLE ROW LEVEL SECURITY;
 
 -- Analytics policies
 CREATE POLICY "Users can read own analytics"
-  ON user_analytics
+  ON public.user_analytics
   FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
 CREATE POLICY "Anyone can read content analytics"
-  ON content_analytics
+  ON public.content_analytics
   FOR SELECT
   TO authenticated
   USING (true);
 
 -- Create indexes
-CREATE INDEX IF NOT EXISTS user_analytics_user_date_idx ON user_analytics(user_id, date DESC);
-CREATE INDEX IF NOT EXISTS user_analytics_date_idx ON user_analytics(date DESC);
-CREATE INDEX IF NOT EXISTS content_analytics_tweet_date_idx ON content_analytics(tweet_id, date DESC);
-CREATE INDEX IF NOT EXISTS content_analytics_engagement_idx ON content_analytics(engagement_rate DESC);
+CREATE INDEX IF NOT EXISTS user_analytics_user_date_idx ON public.user_analytics(user_id, date DESC);
+CREATE INDEX IF NOT EXISTS user_analytics_date_idx ON public.user_analytics(date DESC);
+CREATE INDEX IF NOT EXISTS content_analytics_tweet_date_idx ON public.content_analytics(tweet_id, date DESC);
+CREATE INDEX IF NOT EXISTS content_analytics_engagement_idx ON public.content_analytics(engagement_rate DESC);
 
 -- Function to calculate user engagement score
 CREATE OR REPLACE FUNCTION calculate_user_engagement_score(p_user_id uuid, p_days integer DEFAULT 7)
@@ -96,13 +96,13 @@ BEGIN
     COALESCE(SUM(tweets_posted), 0),
     COALESCE(SUM(likes_received + retweets_received + replies_received), 0)
   INTO total_tweets, total_interactions
-  FROM user_analytics
+  FROM public.user_analytics
   WHERE user_id = p_user_id 
   AND date >= CURRENT_DATE - interval '1 day' * p_days;
   
   -- Get current follower count
   SELECT COUNT(*) INTO follower_count
-  FROM follows
+  FROM public.follows
   WHERE following_id = p_user_id;
   
   -- Calculate activity factor (tweets per day)
@@ -144,9 +144,9 @@ BEGIN
     COALESCE(ca.engagement_rate, 0) as engagement_rate,
     (COALESCE(ca.likes_count, 0) + COALESCE(ca.retweets_count, 0) + COALESCE(ca.replies_count, 0))::bigint as total_interactions,
     t.created_at
-  FROM tweets t
-  JOIN users u ON t.user_id = u.id
-  LEFT JOIN content_analytics ca ON t.id = ca.tweet_id AND ca.date = CURRENT_DATE
+  FROM public.tweets t
+  JOIN public.users u ON t.user_id = u.id
+  LEFT JOIN public.content_analytics ca ON t.id = ca.tweet_id AND ca.date = CURRENT_DATE
   WHERE t.created_at >= (now() - interval '1 hour' * p_hours)
   AND t.parent_id IS NULL
   ORDER BY total_interactions DESC, engagement_rate DESC
@@ -197,9 +197,9 @@ BEGIN
   
   -- Update content analytics for yesterday's tweets
   FOR tweet_record IN 
-    SELECT id FROM tweets WHERE created_at::date = CURRENT_DATE - interval '1 day'
+    SELECT id FROM public.tweets WHERE created_at::date = CURRENT_DATE - interval '1 day'
   LOOP
-    INSERT INTO content_analytics (
+    INSERT INTO public.content_analytics (
       tweet_id,
       date,
       likes_count,
@@ -240,7 +240,7 @@ BEGIN
     ua.tweets_posted,
     ua.engagement_score,
     ua.xp_earned
-  FROM user_analytics ua
+  FROM public.user_analytics ua
   WHERE ua.user_id = p_user_id
   AND ua.date >= CURRENT_DATE - interval '1 day' * p_days
   ORDER BY ua.date DESC;

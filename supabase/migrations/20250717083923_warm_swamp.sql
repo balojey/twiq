@@ -76,45 +76,45 @@ CREATE TABLE IF NOT EXISTS season_leaderboard (
 );
 
 -- Enable RLS
-ALTER TABLE achievements ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_achievements ENABLE ROW LEVEL SECURITY;
-ALTER TABLE leaderboard_seasons ENABLE ROW LEVEL SECURITY;
-ALTER TABLE season_leaderboard ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.achievements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_achievements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.leaderboard_seasons ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.season_leaderboard ENABLE ROW LEVEL SECURITY;
 
 -- Achievement policies
 CREATE POLICY "Anyone can read achievements"
-  ON achievements
+  ON public.achievements
   FOR SELECT
   TO authenticated
   USING (active = true);
 
 CREATE POLICY "Users can read own achievements"
-  ON user_achievements
+  ON public.user_achievements
   FOR SELECT
   TO authenticated
   USING (auth.uid() = user_id);
 
 CREATE POLICY "Anyone can read leaderboard seasons"
-  ON leaderboard_seasons
+  ON public.leaderboard_seasons
   FOR SELECT
   TO authenticated
   USING (true);
 
 CREATE POLICY "Anyone can read season leaderboard"
-  ON season_leaderboard
+  ON public.season_leaderboard
   FOR SELECT
   TO authenticated
   USING (true);
 
 -- Create indexes
-CREATE INDEX IF NOT EXISTS achievements_category_idx ON achievements(category);
-CREATE INDEX IF NOT EXISTS achievements_rarity_idx ON achievements(rarity);
-CREATE INDEX IF NOT EXISTS user_achievements_user_idx ON user_achievements(user_id);
-CREATE INDEX IF NOT EXISTS user_achievements_unlocked_idx ON user_achievements(unlocked_at DESC) WHERE unlocked_at IS NOT NULL;
-CREATE INDEX IF NOT EXISTS season_leaderboard_season_rank_idx ON season_leaderboard(season_id, final_rank);
+CREATE INDEX IF NOT EXISTS achievements_category_idx ON public.achievements(category);
+CREATE INDEX IF NOT EXISTS achievements_rarity_idx ON public.achievements(rarity);
+CREATE INDEX IF NOT EXISTS user_achievements_user_idx ON public.user_achievements(user_id);
+CREATE INDEX IF NOT EXISTS user_achievements_unlocked_idx ON public.user_achievements(unlocked_at DESC) WHERE unlocked_at IS NOT NULL;
+CREATE INDEX IF NOT EXISTS season_leaderboard_season_rank_idx ON public.season_leaderboard(season_id, final_rank);
 
 -- Insert default achievements
-INSERT INTO achievements (title, description, badge_icon, badge_color, criteria, xp_reward, rarity, category) VALUES
+INSERT INTO public.achievements (title, description, badge_icon, badge_color, criteria, xp_reward, rarity, category) VALUES
   ('First Steps', 'Post your very first tweet', '🎯', '#10B981', '{"tweets_count": 1}', 50, 'common', 'content'),
   ('Social Butterfly', 'Follow 10 users', '🦋', '#3B82F6', '{"follows_made": 10}', 75, 'common', 'social'),
   ('Popular Creator', 'Get 100 total likes', '❤️', '#EF4444', '{"total_likes": 100}', 200, 'rare', 'engagement'),
@@ -154,11 +154,11 @@ BEGIN
   
   -- Check each achievement
   FOR achievement_record IN 
-    SELECT * FROM achievements WHERE active = true
+    SELECT * FROM public.achievements WHERE active = true
   LOOP
     -- Check if user already has this achievement
     SELECT * INTO user_achievement_record
-    FROM user_achievements
+    FROM public.user_achievements
     WHERE user_id = p_user_id AND achievement_id = achievement_record.id;
     
     -- Skip if already unlocked
@@ -202,10 +202,10 @@ BEGIN
     -- Unlock achievement if criteria met
     IF criteria_met THEN
       IF user_achievement_record IS NULL THEN
-        INSERT INTO user_achievements (user_id, achievement_id, unlocked_at)
+        INSERT INTO public.user_achievements (user_id, achievement_id, unlocked_at)
         VALUES (p_user_id, achievement_record.id, now());
       ELSE
-        UPDATE user_achievements 
+        UPDATE public.user_achievements 
         SET unlocked_at = now()
         WHERE id = user_achievement_record.id;
       END IF;
@@ -263,7 +263,7 @@ BEGIN
       WHEN ua.unlocked_at IS NOT NULL THEN 100.0
       ELSE 0.0 -- Could be enhanced to show partial progress
     END as progress_percentage
-  FROM achievements a
+  FROM public.achievements a
   LEFT JOIN user_achievements ua ON a.id = ua.achievement_id AND ua.user_id = p_user_id
   WHERE a.active = true
   ORDER BY 

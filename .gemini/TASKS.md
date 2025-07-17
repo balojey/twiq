@@ -161,5 +161,65 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 
 ---
 
+---
+
+## 🔗 Solana Wallet Integration & Onchain Profile
+
+### 📦 Setup & Dependencies
+* [ ] Install required Solana/Honeycomb dependencies:
+  ```bash
+  npm install @solana/wallet-adapter-react @solana/wallet-adapter-base @solana/wallet-adapter-wallets @solana/wallet-adapter-react-ui @solana/web3.js @honeycomb-protocol/edge-client bs58
+  ```
+* [ ] Initialize Honeycomb Edge client in `utils/constants.ts`
+* [ ] Configure Solana wallet adapter context/provider
+* [ ] Add wallet connection UI (bottom-left sidebar button)
+* [ ] Store connected wallet address in Supabase `users` table
+
+---
+
+### ⚡ Wallet Faucet Feature
+
+* [ ] Add "Request 1000 SOL" button to user dashboard/profile page
+* [ ] Create Supabase Edge Function to simulate faucet deposit
+
+  * (e.g., using testnet or mock function for dev/testing)
+* [ ] Show loading indicator and success/failure toast
+* [ ] Add cooldown mechanism or prevent duplicate requests
+
+---
+
+### 🛠️ Onchain Profile Creation
+
+* [ ] Create a serverless function (`createUserProfile.ts`) to:
+
+  * Fetch new user data from Supabase
+  * Use Honeycomb client to generate a transaction:
+
+    ```ts
+    const { createNewUserWithProfileTransaction } = await client.createNewUserWithProfileTransaction(...)
+    ```
+  * Send transaction using:
+
+    ```ts
+    await sendClientTransactions(client, wallet, txResponse);
+    ```
+* [ ] Trigger this function when a new user signs up:
+
+  * (Option A) Call from Supabase edge function `on_new_user_create_profile`
+  * (Option B) Trigger from frontend after wallet connection
+* [ ] Ensure user info (name, bio, avatar) is passed from Supabase
+
+---
+
+### 🧪 Testing & Validation
+
+* [ ] Ensure wallet connects and persists in app state
+* [ ] Ensure onchain profile is correctly created for new users
+* [ ] Confirm that faucet deposits SOL without double-funding
+* [ ] Handle errors (e.g., wallet not connected, transaction rejected)
+
+---
+
+
 ✅ Remember: Every time you complete a task, update `TASKS.md` and write a summary in `SUMMARY.md`.
 
