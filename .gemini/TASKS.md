@@ -178,22 +178,9 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 
 ### ⚡ Wallet Faucet Feature
 
-* [ ] Add "Request 1000 SOL" button to user profile page
-* [ ] Create Function to simulate faucet deposit
-  ```ts
-  import { Connection, Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js@1.73.0"
-  import { useWallet } from '@solana/wallet-adapter-react';
-
-  const connection = new Connection(rpcUrl, "confirmed")
-  const wallet = useWallet()
-  // Airdrop 1000 SOL
-  const airdropSignature = await connection.requestAirdrop(
-    wallet.publickey,
-    1000 * LAMPORTS_PER_SOL
-  )
-  await connection.confirmTransaction(airdropSignature)
-  ```
-* [ ] Show loading indicator and success/failure toast
+* [x] Add FaucetCard component to the sidebar
+* [x] Create Function to simulate faucet deposit
+* [x] Show loading indicator and success/failure toast
 * [ ] Add cooldown mechanism or prevent duplicate requests
 
 ---

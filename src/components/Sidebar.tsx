@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils'
 import SearchBar from '@/components/SearchBar'
 import { WalletConnect } from './auth/WalletConnect'
 
+import { FaucetCard } from './FaucetCard';
+
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Quests', href: '/quests', icon: Target },
@@ -54,6 +56,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="space-y-2">
+        <FaucetCard />
         <WalletConnect />
         
         <Button
