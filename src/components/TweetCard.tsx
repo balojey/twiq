@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { Tweet } from '@/types'
 import { motion } from 'framer-motion'
+import { showNotification } from '@/components/NotificationToast'
 
 interface TweetCardProps {
   tweet: Tweet
@@ -51,13 +52,22 @@ export default function TweetCard({ tweet, onUpdate }: TweetCardProps) {
             p_xp_amount: 5,
             p_reference_id: tweet.id
           })
+          
+          showNotification({
+            type: 'xp',
+            message: 'Tweet liked! Author earned +5 XP',
+            amount: 5
+          })
         }
       }
       
       onUpdate?.()
     } catch (error) {
       console.error('Error toggling like:', error)
-      toast.error('Failed to update like')
+      showNotification({
+        type: 'like',
+        message: 'Failed to update like'
+      })
     } finally {
       setIsLiking(false)
     }
@@ -95,13 +105,22 @@ export default function TweetCard({ tweet, onUpdate }: TweetCardProps) {
             p_xp_amount: 10,
             p_reference_id: tweet.id
           })
+          
+          showNotification({
+            type: 'xp',
+            message: 'Tweet retweeted! Author earned +10 XP',
+            amount: 10
+          })
         }
       }
       
       onUpdate?.()
     } catch (error) {
       console.error('Error toggling retweet:', error)
-      toast.error('Failed to update retweet')
+      showNotification({
+        type: 'retweet',
+        message: 'Failed to update retweet'
+      })
     } finally {
       setIsRetweeting(false)
     }

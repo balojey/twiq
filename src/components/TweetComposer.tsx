@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
-import { ImageIcon, Smile } from 'lucide-react'
+import { ImageIcon, Smile, MapPin, Calendar } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
+import { motion } from 'framer-motion'
+import { showNotification } from '@/components/NotificationToast'
 
 interface TweetComposerProps {
   onTweetPosted?: () => void
@@ -44,11 +46,18 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
       })
 
       setContent('')
-      toast.success('Tweet posted! +10 XP')
+      showNotification({
+        type: 'xp',
+        message: 'Tweet posted successfully!',
+        amount: 10
+      })
       onTweetPosted?.()
     } catch (error) {
       console.error('Error posting tweet:', error)
-      toast.error('Failed to post tweet')
+      showNotification({
+        type: 'reply',
+        message: 'Failed to post tweet'
+      })
     } finally {
       setIsPosting(false)
     }
@@ -59,7 +68,12 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
   const isEmpty = content.trim().length === 0
 
   return (
-    <Card>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      <Card>
       <CardContent className="p-4">
         <form onSubmit={handleSubmit}>
           <div className="flex space-x-3">
@@ -98,6 +112,24 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
                   >
                     <Smile className="h-4 w-4" />
                   </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-primary hover:bg-primary/10"
+                    disabled
+                  >
+                    <MapPin className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="text-primary hover:bg-primary/10"
+                    disabled
+                  >
+                    <Calendar className="h-4 w-4" />
+                  </Button>
                 </div>
                 
                 <div className="flex items-center space-x-3">
@@ -118,5 +150,6 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
         </form>
       </CardContent>
     </Card>
+    </motion.div>
   )
 }

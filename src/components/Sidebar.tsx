@@ -1,11 +1,13 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Home, User, Trophy, Settings, LogOut, Wallet } from 'lucide-react'
+import { Home, User, Trophy, Settings, LogOut, Wallet, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { cn } from '@/lib/utils'
+import SearchBar from '@/components/SearchBar'
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
+  { name: 'Quests', href: '/quests', icon: Target },
   { name: 'Profile', href: '/profile', icon: User },
   { name: 'Leaderboard', href: '/leaderboard', icon: Trophy },
   { name: 'Settings', href: '/settings', icon: Settings },
@@ -19,6 +21,11 @@ export default function Sidebar() {
     <div className="w-64 p-4 flex flex-col h-screen">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-primary">Twiq</h1>
+        <p className="text-xs text-muted-foreground mt-1">Gamified Social Network</p>
+      </div>
+
+      <div className="mb-6">
+        <SearchBar placeholder="Search users, tweets..." />
       </div>
 
       <nav className="flex-1 space-y-2">
