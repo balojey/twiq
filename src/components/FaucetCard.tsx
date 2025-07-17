@@ -6,11 +6,41 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { toast } from "sonner";
 
+const COOLDOWN_SECONDS = 60;
+
 export const FaucetCard: FC = () => {
     const { connection } = useConnection();
     const { publicKey } = useWallet();
     const [balance, setBalance] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
+    const [cooldown, setCooldown] = useState(0);
+
+    const getAirdropCooldownKey = (pubkey: string) => `airdrop_cooldown_${pubkey}`;
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout | null = null;
+        if (cooldown > 0) {
+            interval = setInterval(() => {
+                setCooldown((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [cooldown]);
+
+    useEffect(() => {
+        if (!publicKey) return;
+        const key = getAirdropCooldownKey(publicKey.toBase58());
+        const lastAirdrop = localStorage.getItem(key);
+        if (lastAirdrop) {
+            const remaining = COOLDOWN_SECONDS - (Date.now() - parseInt(lastAirdrop, 10)) / 1000;
+            if (remaining > 0) {
+                setCooldown(Math.ceil(remaining));
+            }
+        }
+    }, [publicKey]);
+
 
     const refreshBalance = useCallback(async () => {
         if (!publicKey) {
@@ -39,6 +69,13 @@ export const FaucetCard: FC = () => {
             return;
         }
 
+        if (cooldown > 0) {
+            toast.warning("Cooldown active", {
+                description: `Please wait ${cooldown} seconds before requesting another airdrop.`,
+            });
+            return;
+        }
+
         setLoading(true);
         try {
             const airdropSignature = await connection.requestAirdrop(
@@ -61,6 +98,9 @@ export const FaucetCard: FC = () => {
                     onClick: () => window.open(`https://explorer.solana.com/tx/${airdropSignature}?cluster=devnet`, "_blank")
                 }
             });
+            const key = getAirdropCooldownKey(publicKey.toBase58());
+            localStorage.setItem(key, Date.now().toString());
+            setCooldown(COOLDOWN_SECONDS);
             await refreshBalance();
         } catch (error) {
             console.error("Airdrop failed:", error);
@@ -70,7 +110,7 @@ export const FaucetCard: FC = () => {
         } finally {
             setLoading(false);
         }
-    }, [publicKey, connection, toast, refreshBalance]);
+    }, [publicKey, connection, toast, refreshBalance, cooldown]);
 
     return (
         <Card>
@@ -81,8 +121,8 @@ export const FaucetCard: FC = () => {
                 {publicKey ? (
                     <>
                         <p>Balance: {balance !== null ? `${balance.toFixed(4)} SOL` : "Loading..."}</p>
-                        <Button onClick={handleAirdrop} disabled={loading}>
-                            {loading ? "Requesting..." : "Request 1 SOL"}
+                        <Button onClick={handleAirdrop} disabled={loading || cooldown > 0}>
+                            {loading ? "Requesting..." : cooldown > 0 ? `Cooldown (${cooldown}s)` : "Request 1 SOL"}
                         </Button>
                         <Button onClick={refreshBalance} variant="outline" disabled={loading}>
                             Refresh Balance

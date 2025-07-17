@@ -1,25 +1,21 @@
-### ✅ Implemented Wallet Faucet Feature
+### ✅ Implemented Faucet Cooldown
 
-- **Created `FaucetCard.tsx` Component**: Built a new component to allow users to request test SOL from the devnet.
-- **Integrated with Solana/Web3.js**: Used `@solana/web3.js` to connect to the Solana devnet and handle the airdrop request.
-- **Added to Sidebar**: Integrated the `FaucetCard` into the main `Sidebar.tsx` for easy access.
-- **Real-time Balance Refresh**: The component displays the user's current SOL balance and provides a button to refresh it.
-- **User Feedback with Sonner**: Implemented toast notifications using `sonner` to provide feedback on the airdrop process (success, failure, wallet not connected).
+- **Added Cooldown Logic**: Implemented a cooldown mechanism for the faucet to prevent users from requesting SOL too frequently.
+- **Used Local Storage**: Stored the timestamp of the last airdrop in local storage to persist the cooldown across sessions.
+- **Dynamic Button State**: The airdrop button is now disabled during the cooldown period, and a countdown timer is displayed.
+- **User-Friendly Feedback**: Provided toast notifications to inform the user if the cooldown is active.
 
 #### 🧠 Key Decisions
 
-- **Component-Based Approach**: Created a dedicated `FaucetCard` component to encapsulate the faucet logic, keeping the sidebar clean.
-- **Leveraged Existing Toast System**: Adapted the implementation to use the existing `sonner` toast notification system for a consistent user experience.
-- **Direct Solana Integration**: Interacted directly with the Solana JSON-RPC endpoint for airdrops, providing a simple and effective faucet mechanism.
+- **Local Storage for Cooldown**: Chose local storage for its simplicity and effectiveness in persisting the cooldown state on the client-side.
+- **Client-Side Validation**: Implemented the cooldown logic entirely on the frontend, which is sufficient for a development-focused feature like a faucet.
+- **Clear User Feedback**: Designed the UI to clearly communicate the cooldown state to the user, preventing confusion.
 
 #### 📁 Files Affected
 
-- `package.json`
-- `package-lock.json`
-- `src/components/FaucetCard.tsx` (new)
-- `src/components/Sidebar.tsx`
+- `src/components/FaucetCard.tsx`
 - `.gemini/TASKS.md`
 
 ---
 
-⏭️ **Next**: Implement a cooldown mechanism for the faucet to prevent abuse.
+⏭️ **Next**: Start working on the onchain profile creation.

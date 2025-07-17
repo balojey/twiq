@@ -181,7 +181,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 * [x] Add FaucetCard component to the sidebar
 * [x] Create Function to simulate faucet deposit
 * [x] Show loading indicator and success/failure toast
-* [ ] Add cooldown mechanism or prevent duplicate requests
+* [x] Add cooldown mechanism or prevent duplicate requests
 
 ---
 
