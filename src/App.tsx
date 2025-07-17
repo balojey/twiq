@@ -8,8 +8,10 @@ import HomePage from '@/pages/HomePage'
 import ProfilePage from '@/pages/ProfilePage'
 import LeaderboardPage from '@/pages/LeaderboardPage'
 import QuestsPage from '@/pages/QuestsPage'
+import AnalyticsPage from '@/pages/AnalyticsPage'
 import SettingsPage from '@/pages/SettingsPage'
 import NotFoundPage from '@/components/NotFoundPage'
+import EnhancedNotificationSystem from '@/components/EnhancedNotificationSystem'
 import './App.css'
 
 function App() {
@@ -25,10 +27,12 @@ function App() {
                   <Route path="/profile/:username" element={<ProfilePage />} />
                   <Route path="/leaderboard" element={<LeaderboardPage />} />
                   <Route path="/quests" element={<QuestsPage />} />
+                  <Route path="/analytics" element={<AnalyticsPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Layout>
+              <EnhancedNotificationSystem />
               <Toaster />
             </div>
           </Router>

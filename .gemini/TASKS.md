@@ -109,6 +109,11 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Trending hashtags display
 - [x] Popular feed with engagement-based ranking
 - [x] Loading states and skeleton loaders
+- [x] Advanced analytics dashboard with growth metrics
+- [x] Achievement system with badges and progress tracking
+- [x] Enhanced notification system with real-time updates
+- [x] User engagement scoring and performance analytics
+- [x] Seasonal leaderboard system (database ready)
 
 ---
 
@@ -133,15 +138,26 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Optimize images/media
 - [x] Add meta tags / SEO basics
 - [x] Track errors (e.g., with Sentry or console logging)
+- [x] Advanced analytics and reporting system
+- [x] Achievement and badge collection system
+- [x] Performance monitoring and user engagement tracking
 
 ---
 
 ## 🔁 Post-MVP Enhancements (Icebox)
 - [x] Notification system for likes/retweets/XP
+- [x] Advanced analytics dashboard
+- [x] Achievement and badge system
+- [x] Real-time notification system
 - [ ] Direct messages (DMs)
 - [ ] Tweet scheduling
 - [ ] Custom badges / cosmetics for high-level users
 - [x] Explore page with trending tags or users
+- [ ] Admin dashboard for platform analytics
+- [ ] Content moderation tools
+- [ ] API rate limiting and abuse prevention
+- [ ] Mobile app development
+- [ ] Advanced search and filtering
 
 ---
 
