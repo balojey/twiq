@@ -41,9 +41,9 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 
 ## 🏠 Feed Pages
 - [x] Public Feed (latest tweets from everyone)
-- [ ] Following Feed (tweets from followed users)
+- [x] Following Feed (tweets from followed users)
 - [ ] Popular Feed (top liked/retweeted tweets daily)
-- [x] Basic feed loading (needs infinite scroll)
+- [x] Basic feed loading with infinite scroll
 - [ ] Tweet detail view with thread replies
 
 ---
@@ -52,8 +52,8 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Supabase tables for `likes`, `retweets`, `follows`
 - [x] Like/unlike tweet functionality
 - [x] Retweet tweet functionality
-- [ ] Follow/unfollow users
-- [ ] Show follower/following counts on profile
+- [x] Follow/unfollow users
+- [x] Show follower/following counts on profile
 
 ---
 
@@ -98,7 +98,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Rich notification system for all user actions
 - [x] Smooth animations for tweets and interactions
 - [x] Enhanced right sidebar with useful widgets
-- [ ] Infinite scroll for tweet feeds
+- [x] Infinite scroll for tweet feeds
 - [ ] Tweet detail modal/page
 - [ ] User profile editing interface
 

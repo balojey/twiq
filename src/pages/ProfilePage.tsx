@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { User, Tweet } from '@/types'
 import TweetCard from '@/components/TweetCard'
+import FollowButton from '@/components/FollowButton'
 import { formatDistanceToNow } from 'date-fns'
 
 export default function ProfilePage() {
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const [tweets, setTweets] = useState<Tweet[]>([])
   const [loading, setLoading] = useState(true)
   const [tweetsLoading, setTweetsLoading] = useState(true)
+  const [isFollowing, setIsFollowing] = useState(false)
   const [stats, setStats] = useState({
     tweetsCount: 0,
     followersCount: 0,
@@ -29,9 +31,17 @@ export default function ProfilePage() {
     if (username) {
       fetchProfile()
       fetchUserTweets()
-      fetchUserStats()
     }
   }, [username])
+
+  useEffect(() => {
+    if (profileUser && user && !isOwnProfile) {
+      checkFollowStatus()
+    }
+    if (profileUser) {
+      fetchUserStats()
+    }
+  }, [profileUser, user, isOwnProfile])
 
   const fetchProfile = async () => {
     try {
@@ -50,6 +60,23 @@ export default function ProfilePage() {
     }
   }
 
+  const checkFollowStatus = async () => {
+    if (!user || !profileUser) return
+    
+    try {
+      const { data, error } = await supabase
+        .from('follows')
+        .select('id')
+        .eq('follower_id', user.id)
+        .eq('following_id', profileUser.id)
+        .single()
+      
+      setIsFollowing(!!data)
+    } catch (error) {
+      // No follow relationship exists
+      setIsFollowing(false)
+    }
+  }
   const fetchUserTweets = async () => {
     try {
       const { data, error } = await supabase
@@ -93,16 +120,27 @@ export default function ProfilePage() {
         .select('*', { count: 'exact', head: true })
         .eq('user_id', profileUser.id)
 
+      // Get follow stats
+      const { data: followStats } = await supabase
+        .rpc('get_user_follow_stats', { p_user_id: profileUser.id })
+        .single()
       setStats({
         tweetsCount: tweetsCount || 0,
-        followersCount: 0, // TODO: Implement follows system
-        followingCount: 0  // TODO: Implement follows system
+        followersCount: followStats?.followers_count || 0,
+        followingCount: followStats?.following_count || 0
       })
     } catch (error) {
       console.error('Error fetching user stats:', error)
     }
   }
 
+  const handleFollowChange = (newFollowStatus: boolean) => {
+    setIsFollowing(newFollowStatus)
+    setStats(prev => ({
+      ...prev,
+      followersCount: prev.followersCount + (newFollowStatus ? 1 : -1)
+    }))
+  }
   if (loading) {
     return (
       <div className="max-w-2xl mx-auto">
@@ -167,6 +205,14 @@ export default function ProfilePage() {
                 <Button variant="outline" size="sm">
                   Edit Profile
                 </Button>
+              )}
+              {!isOwnProfile && profileUser && (
+                <FollowButton
+                  targetUserId={profileUser.id}
+                  targetUsername={profileUser.username}
+                  isFollowing={isFollowing}
+                  onFollowChange={handleFollowChange}
+                />
               )}
             </div>
           </CardHeader>
