@@ -5,6 +5,7 @@ import XPProgressBar from '@/components/XPProgressBar'
 import ThemeToggle from '@/components/ThemeToggle'
 import UserSuggestions from '@/components/UserSuggestions'
 import TweetStats from '@/components/TweetStats'
+import TrendingHashtags from '@/components/TrendingHashtags'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useDailyLogin } from '@/hooks/useDailyLogin'
 import DailyStreakCard from '@/components/DailyStreakCard'
@@ -42,6 +43,8 @@ export default function Layout({ children }: LayoutProps) {
         <div className="w-80 p-4">
           <div className="sticky top-4 space-y-4">
             <TweetStats />
+            
+            <TrendingHashtags />
             
             <DailyStreakCard />
             
