@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
-import { ImageIcon, Smile, MapPin, Calendar } from 'lucide-react'
+import { ImageIcon, Smile, MapPin, Calendar, X } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabase'
 import { toast } from 'sonner'
 import { motion } from 'framer-motion'
 import { showNotification } from '@/components/NotificationToast'
+import MediaUpload from '@/components/MediaUpload'
 
 interface TweetComposerProps {
   onTweetPosted?: () => void
@@ -18,6 +19,8 @@ interface TweetComposerProps {
 export default function TweetComposer({ onTweetPosted, placeholder = "What's happening?", parentId }: TweetComposerProps) {
   const [content, setContent] = useState('')
   const [isPosting, setIsPosting] = useState(false)
+  const [mediaUrl, setMediaUrl] = useState<string>('')
+  const [showMediaUpload, setShowMediaUpload] = useState(false)
   const { user } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,7 +36,8 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
         .insert({
           user_id: user.id,
           content: content.trim(),
-          parent_id: parentId || null
+          parent_id: parentId || null,
+          media_url: mediaUrl || null
         })
 
       if (error) throw error
@@ -46,6 +50,8 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
       })
 
       setContent('')
+      setMediaUrl('')
+      setShowMediaUpload(false)
       showNotification({
         type: 'xp',
         message: 'Tweet posted successfully!',
@@ -92,6 +98,17 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
                 disabled={isPosting}
               />
               
+              {showMediaUpload && (
+                <div className="mt-3">
+                  <MediaUpload
+                    onMediaUploaded={setMediaUrl}
+                    onMediaRemoved={() => setMediaUrl('')}
+                    currentMedia={mediaUrl}
+                    disabled={isPosting}
+                  />
+                </div>
+              )}
+              
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Button
@@ -99,7 +116,8 @@ export default function TweetComposer({ onTweetPosted, placeholder = "What's hap
                     variant="ghost"
                     size="sm"
                     className="text-primary hover:bg-primary/10"
-                    disabled
+                    onClick={() => setShowMediaUpload(!showMediaUpload)}
+                    disabled={isPosting}
                   >
                     <ImageIcon className="h-4 w-4" />
                   </Button>
