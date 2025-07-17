@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import TweetComposer from '@/components/TweetComposer'
 import TweetFeed from '@/components/TweetFeed'
 import TweetDetailModal from '@/components/TweetDetailModal'
+import PopularFeed from '@/components/PopularFeed'
 
 export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'public' | 'following' | 'popular'>('public')
@@ -45,11 +46,18 @@ export default function HomePage() {
       <div className="p-4">
         <div className="space-y-4">
           <TweetComposer onTweetPosted={handleTweetPosted} />
-          <TweetFeed 
-            key={feedKey} 
-            feedType={activeTab} 
-            onTweetClick={handleTweetClick}
-          />
+          {activeTab === 'popular' ? (
+            <PopularFeed 
+              key={feedKey}
+              onTweetClick={handleTweetClick}
+            />
+          ) : (
+            <TweetFeed 
+              key={feedKey} 
+              feedType={activeTab} 
+              onTweetClick={handleTweetClick}
+            />
+          )}
         </div>
       </div>
     </div>

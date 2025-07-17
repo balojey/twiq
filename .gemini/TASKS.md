@@ -86,7 +86,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Build `/leaderboard` page
 - [x] Aggregate top XP earners (daily/weekly/monthly)
 - [x] Display username, avatar, level, XP
-- [ ] Add filters/sorting for leaderboard
+- [x] Add filters/sorting for leaderboard
 
 ---
 
@@ -104,6 +104,11 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Daily login streak tracking and rewards
 - [x] Media upload with drag-and-drop support
 - [x] Comprehensive notification system
+- [x] Error boundaries and fallback states
+- [x] 404 page with helpful navigation
+- [x] Trending hashtags display
+- [x] Popular feed with engagement-based ranking
+- [x] Loading states and skeleton loaders
 
 ---
 
@@ -112,7 +117,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Toggle dark/light mode
 - [x] Logout functionality
 - [x] Route guards (private vs. public pages)
-- [ ] 404 and fallback states
+- [x] 404 and fallback states
 
 ---
 
@@ -124,26 +129,26 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ---
 
 ## 📄 Documentation & Logging
-- [ ] Maintain `SUMMARY.md` after every completed task
-- [ ] Keep this `TASKS.md` file updated and checked
-- [ ] Write high-level README for repo
-- [ ] Add .env.example and setup instructions
+- [x] Maintain `SUMMARY.md` after every completed task
+- [x] Keep this `TASKS.md` file updated and checked
+- [x] Write high-level README for repo
+- [x] Add .env.example and setup instructions
 
 ---
 
 ## 📊 Deployment (Optional)
-- [ ] Optimize images/media
-- [ ] Add meta tags / SEO basics
-- [ ] Track errors (e.g., with Sentry or console logging)
+- [x] Optimize images/media
+- [x] Add meta tags / SEO basics
+- [x] Track errors (e.g., with Sentry or console logging)
 
 ---
 
 ## 🔁 Post-MVP Enhancements (Icebox)
-- [ ] Notification system for likes/retweets/XP
+- [x] Notification system for likes/retweets/XP
 - [ ] Direct messages (DMs)
 - [ ] Tweet scheduling
 - [ ] Custom badges / cosmetics for high-level users
-- [ ] Explore page with trending tags or users
+- [x] Explore page with trending tags or users
 
 ---
 
