@@ -5,6 +5,7 @@ import { Tweet } from '@/types'
 import TweetCard from '@/components/TweetCard'
 import { Card, CardContent } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface TweetFeedProps {
   feedType: 'public' | 'following' | 'popular'
@@ -127,11 +128,17 @@ export default function TweetFeed({ feedType }: TweetFeedProps) {
   return (
     <div className="space-y-4">
       {tweets.map((tweet) => (
-        <TweetCard
+        <motion.div
           key={tweet.id}
-          tweet={tweet}
-          onUpdate={fetchTweets}
-        />
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <TweetCard
+            tweet={tweet}
+            onUpdate={fetchTweets}
+          />
+        </motion.div>
       ))}
     </div>
   )

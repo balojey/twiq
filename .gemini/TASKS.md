@@ -13,7 +13,7 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 - [x] Install Framer Motion
 - [x] Set up Supabase project
 - [x] Connect Supabase to frontend
-- [ ] Add dark mode support
+- [x] Add dark mode support
 
 ---
 
@@ -40,10 +40,10 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ---
 
 ## 🏠 Feed Pages
-- [ ] Public Feed (latest tweets from everyone)
+- [x] Public Feed (latest tweets from everyone)
 - [ ] Following Feed (tweets from followed users)
 - [ ] Popular Feed (top liked/retweeted tweets daily)
-- [ ] Basic feed loading (needs infinite scroll)
+- [x] Basic feed loading (needs infinite scroll)
 - [ ] Tweet detail view with thread replies
 
 ---
@@ -67,32 +67,46 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
   - [ ] Logging in daily
 - [x] Level progression based on XP
 - [x] Build XP progress bar (floating in layout)
-- [ ] Display level-up animations or badge
+- [x] Display level-up animations or badge
 - [ ] Cap XP per user per hour to prevent abuse
 
 ---
 
 ## 🧩 Quest Engine
 - [x] Build Quest table schema (JSON-based criteria)
-- [ ] Build backend logic for tracking quest progress
-- [ ] Show active quests in UI
-- [ ] Trigger UI reward animation when a quest is completed
+- [x] Build backend logic for tracking quest progress
+- [x] Show active quests in UI
+- [x] Trigger UI reward animation when a quest is completed
 - [x] Add daily/weekly quests (e.g., "Post 5 tweets")
 - [ ] Add cooldown between same quest completions
 
 ---
 
 ## 🏆 Leaderboard
-- [ ] Build `/leaderboard` page
-- [ ] Aggregate top XP earners (daily/weekly/monthly)
-- [ ] Display username, avatar, level, XP
+- [x] Build `/leaderboard` page
+- [x] Aggregate top XP earners (daily/weekly/monthly)
+- [x] Display username, avatar, level, XP
 - [ ] Add filters/sorting for leaderboard
+
+---
+
+## 🎨 UI/UX Enhancements
+- [x] Theme toggle with light/dark mode support
+- [x] Platform statistics dashboard
+- [x] User suggestions and discovery
+- [x] Search functionality with animated suggestions
+- [x] Rich notification system for all user actions
+- [x] Smooth animations for tweets and interactions
+- [x] Enhanced right sidebar with useful widgets
+- [ ] Infinite scroll for tweet feeds
+- [ ] Tweet detail modal/page
+- [ ] User profile editing interface
 
 ---
 
 ## 🔒 Settings & Utilities
 - [ ] User settings page (change email, password, bio)
-- [ ] Toggle dark/light mode
+- [x] Toggle dark/light mode
 - [ ] Logout functionality
 - [ ] Route guards (private vs. public pages)
 - [ ] 404 and fallback states
