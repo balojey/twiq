@@ -10,6 +10,7 @@ interface AuthContextType {
   loading: boolean
   signOut: () => Promise<void>
   signInWithGitHub: () => Promise<void>
+  updateUserWallet: (walletAddress: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -75,8 +76,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  const updateUserWallet = async (walletAddress: string) => {
+    if (!user) return;
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .update({ wallet_address: walletAddress })
+        .eq('id', user.id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      setUser(data);
+      toast.success('Wallet address updated successfully');
+    } catch (error) {
+      console.error('Error updating wallet address:', error);
+      toast.error('Failed to update wallet address');
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, supabaseUser, loading, signOut, signInWithGitHub }}>
+    <AuthContext.Provider value={{ user, supabaseUser, loading, signOut, signInWithGitHub, updateUserWallet }}>
       {children}
     </AuthContext.Provider>
   )

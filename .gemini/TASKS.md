@@ -166,14 +166,14 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 ## 🔗 Solana Wallet Integration & Onchain Profile
 
 ### 📦 Setup & Dependencies
-* [ ] Install required Solana/Honeycomb dependencies:
+* [x] Install required Solana/Honeycomb dependencies:
   ```bash
   npm install @solana/wallet-adapter-react @solana/wallet-adapter-base @solana/wallet-adapter-wallets @solana/wallet-adapter-react-ui @solana/web3.js @honeycomb-protocol/edge-client bs58
   ```
-* [ ] Initialize Honeycomb Edge client in `utils/constants.ts`
-* [ ] Configure Solana wallet adapter context/provider
-* [ ] Add wallet connection UI (bottom-left sidebar button)
-* [ ] Store connected wallet address in Supabase `users` table
+* [x] Initialize Honeycomb Edge client in `utils/constants.ts`
+* [x] Configure Solana wallet adapter context/provider
+* [x] Add wallet connection UI (bottom-left sidebar button)
+* [x] Store connected wallet address in Supabase `users` table
 
 ---
 

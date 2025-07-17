@@ -1,9 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Home, User, Trophy, Settings, LogOut, Wallet, Target, BarChart3 } from 'lucide-react'
+import { Home, User, Trophy, Settings, LogOut, Target, BarChart3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
 import { cn } from '@/lib/utils'
 import SearchBar from '@/components/SearchBar'
+import { WalletConnect } from './auth/WalletConnect'
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
@@ -53,10 +54,7 @@ export default function Sidebar() {
       </nav>
 
       <div className="space-y-2">
-        <Button variant="outline" className="w-full justify-start" disabled>
-          <Wallet className="mr-2 h-4 w-4" />
-          Connect Wallet
-        </Button>
+        <WalletConnect />
         
         <Button
           variant="ghost"
