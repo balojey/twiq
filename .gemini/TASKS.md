@@ -208,15 +208,6 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 
 ---
 
-### 🧪 Testing & Validation
-
-* [ ] Ensure wallet connects and persists in app state
-* [ ] Ensure onchain profile is correctly created for new users
-* [ ] Confirm that faucet deposits SOL without double-funding
-* [ ] Handle errors (e.g., wallet not connected, transaction rejected)
-
----
-
 
 ✅ Remember: Every time you complete a task, update `TASKS.md` and write a summary in `SUMMARY.md`.
 
