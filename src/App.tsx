@@ -6,6 +6,7 @@ import Layout from '@/components/Layout'
 import HomePage from '@/pages/HomePage'
 import ProfilePage from '@/pages/ProfilePage'
 import LeaderboardPage from '@/pages/LeaderboardPage'
+import QuestsPage from '@/pages/QuestsPage'
 import './App.css'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/profile/:username" element={<ProfilePage />} />
                 <Route path="/leaderboard" element={<LeaderboardPage />} />
+                <Route path="/quests" element={<QuestsPage />} />
               </Routes>
             </Layout>
             <Toaster />
