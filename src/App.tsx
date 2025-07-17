@@ -13,7 +13,6 @@ import AnalyticsPage from '@/pages/AnalyticsPage'
 import SettingsPage from '@/pages/SettingsPage'
 import NotFoundPage from '@/components/NotFoundPage'
 import EnhancedNotificationSystem from '@/components/EnhancedNotificationSystem'
-import WalletObserver from '@/components/auth/WalletObserver'
 import './App.css'
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
       <ThemeProvider>
         <WalletContextProvider>
           <AuthProvider>
-            <WalletObserver />
             <Router>
               <div className="min-h-screen bg-background text-foreground">
                 <Layout>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { User as SupabaseUser } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 import { User } from '@/types'
@@ -10,7 +10,6 @@ interface AuthContextType {
   loading: boolean
   signOut: () => Promise<void>
   signInWithGitHub: () => Promise<void>
-  updateUserWallet: (walletAddress: string) => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -32,7 +31,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     })
   }, [])
 
-  const fetchUserProfile = async (userId: string) => {
+  const fetchUserProfile = useCallback(async (userId: string) => {
     try {
       const { data, error } = await supabase
         .from('users')
@@ -47,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   const signInWithGitHub = async () => {
     try {
@@ -76,27 +75,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const updateUserWallet = async (walletAddress: string) => {
-    if (!user) return;
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .update({ wallet_address: walletAddress })
-        .eq('id', user.id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      setUser(data);
-      toast.success('Wallet address updated successfully');
-    } catch (error) {
-      console.error('Error updating wallet address:', error);
-      toast.error('Failed to update wallet address');
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ user, supabaseUser, loading, signOut, signInWithGitHub, updateUserWallet }}>
+    <AuthContext.Provider value={{ user, supabaseUser, loading, signOut, signInWithGitHub }}>
       {children}
     </AuthContext.Provider>
   )

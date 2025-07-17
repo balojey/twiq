@@ -173,16 +173,26 @@ Update this file frequently — mark tasks as `[ ]` when completed, and append n
 * [x] Initialize Honeycomb Edge client in `utils/constants.ts`
 * [x] Configure Solana wallet adapter context/provider
 * [x] Add wallet connection UI (bottom-left sidebar button)
-* [x] Store connected wallet address in Supabase `users` table
 
 ---
 
 ### ⚡ Wallet Faucet Feature
 
-* [ ] Add "Request 1000 SOL" button to user dashboard/profile page
-* [ ] Create Supabase Edge Function to simulate faucet deposit
+* [ ] Add "Request 1000 SOL" button to user profile page
+* [ ] Create Function to simulate faucet deposit
+  ```ts
+  import { Connection, Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js@1.73.0"
+  import { useWallet } from '@solana/wallet-adapter-react';
 
-  * (e.g., using testnet or mock function for dev/testing)
+  const connection = new Connection(rpcUrl, "confirmed")
+  const wallet = useWallet()
+  // Airdrop 1000 SOL
+  const airdropSignature = await connection.requestAirdrop(
+    wallet.publickey,
+    1000 * LAMPORTS_PER_SOL
+  )
+  await connection.confirmTransaction(airdropSignature)
+  ```
 * [ ] Show loading indicator and success/failure toast
 * [ ] Add cooldown mechanism or prevent duplicate requests
 
